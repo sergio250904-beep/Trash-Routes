@@ -48,7 +48,7 @@ function Mapa({ nombre, direccion, onCerrarSesion }) {
 
     try {
       // Petición al servidor local XAMPP (PHP)
-      const respuesta = await fetch('http://3.137.150.65/guardar_ruta.php', {
+      const respuesta = await fetch('http://3.23.59.177/guardar_ruta.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

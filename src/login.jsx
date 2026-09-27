@@ -32,7 +32,7 @@ function Login({ onLoginExitoso }) {
       };
 
       // Petición al servidor local XAMPP
-      const respuesta = await fetch('http://18.220.253.245/login_usuario.php', {
+      const respuesta = await fetch('http://3.23.59.177/login_usuario.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
