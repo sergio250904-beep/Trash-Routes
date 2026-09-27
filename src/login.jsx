@@ -31,8 +31,11 @@ function Login({ onLoginExitoso }) {
         calle: esRegistro ? calle : '' 
       };
 
-      // Petición al servidor local XAMPP
-      const respuesta = await fetch('http://3.23.59.177/login_usuario.php', {
+      // Leemos la URL base desde el archivo .env de forma dinámica
+      const urlBase = import.meta.env.VITE_API_URL;
+
+      // Petición al servidor utilizando la variable de entorno
+      const respuesta = await fetch(`${urlBase}/login_usuario.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
