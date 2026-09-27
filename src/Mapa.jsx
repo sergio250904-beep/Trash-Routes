@@ -81,20 +81,23 @@ function Mapa({ nombre, direccion, onCerrarSesion }) {
   };
 
   const manejarQueja = async (e) => {
-    e.preventDefault();
-    if (!queja.trim()) return;
+  e.preventDefault();
+  if (!queja.trim()) return;
 
-    try {
-      const respuesta = await fetch('http://3.23.59.177/guardar_ruta.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          punto_recoleccion: direccionReporte, // Ahora envía la ubicación exacta del GPS
-          zona: queja 
-        })
-      });
+  try {
+    // Llamamos a la variable desde el .env
+    const urlBase = import.meta.env.VITE_API_URL;
+
+    const respuesta = await fetch(`${urlBase}/guardar_ruta.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        punto_recoleccion: direccionReporte,
+        zona: queja 
+      })
+    });
 
       const resultado = await respuesta.json();
       
