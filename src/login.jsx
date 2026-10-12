@@ -7,9 +7,11 @@ function Login({ onLoginExitoso }) {
   const [calle, setCalle] = useState('');
   const [cargando, setCargando] = useState(false);
 
-  const callesCulturas = [
-    "Calle Coahuiteca", "Calle Mixe", "Calle Mazateca", 
-    "Calle Cora", "Calle Huichol", "Calle Tlapaneca"
+  // Perímetro limitado a la colonia Tecnológico
+  const callesTecnologico = [
+    "Avenida Tecnológico", 
+    "Calle Virgilio Garza Ruiz", 
+    "Calle Tarahumaras"
   ];
 
   const manejarEnvio = async (e) => {
@@ -23,58 +25,37 @@ function Login({ onLoginExitoso }) {
         return;
       }
 
-      // Preparamos los datos para enviarlos al PHP
-      const payload = {
-        accion: esRegistro ? 'registro' : 'login',
-        usuario: usuario,
-        password: password,
-        calle: esRegistro ? calle : '' 
-      };
+      // Simulamos la respuesta o conexión con el entorno de AWS
+      await new Promise(resolve => setTimeout(resolve, 1200));
 
-      // Leemos la URL base desde el archivo .env de forma dinámica
-      const urlBase = import.meta.env.VITE_API_URL;
-
-      // Petición al servidor utilizando la variable de entorno
-      const respuesta = await fetch(`${urlBase}/login_usuario.php`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
+      onLoginExitoso({ 
+        nombre: usuario, 
+        direccion: esRegistro ? calle : 'Avenida Tecnológico (Zona de Prueba)' 
       });
 
-      const resultado = await respuesta.json();
-
-      if (resultado.status === 'exito') {
-        onLoginExitoso({ nombre: resultado.usuario, direccion: resultado.direccion });
-      } else {
-        alert(resultado.mensaje);
-      }
-
     } catch (error) {
-      console.error("Error al procesar:", error);
-      alert("Error al conectar con el servidor PHP.");
+      console.error("Error en la autenticación:", error);
     } finally {
       setCargando(false);
     }
   };
 
   return (
-    <div style={{ padding: '30px', maxWidth: '400px', width: '100%', backgroundColor: '#1e1e1e', borderRadius: '12px', textAlign: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.5)' }}>
-      <h2 style={{ marginTop: 0 }}>{esRegistro ? 'Crear Cuenta' : 'Iniciar Sesión'}</h2>
+    <div style={{ padding: '30px', maxWidth: '400px', width: '100%', backgroundColor: '#1e1e1e', borderRadius: '12px', textAlign: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.5)', margin: 'auto' }}>
+      <h2 style={{ marginTop: 0, color: '#fff' }}>{esRegistro ? 'Crear Cuenta' : 'Iniciar Sesión'}</h2>
       
       <form onSubmit={manejarEnvio} style={{ textAlign: 'left' }}>
         <div style={{ marginBottom: '15px' }}>
-          <label>Usuario:</label>
+          <label style={{ color: '#ccc' }}>Usuario:</label>
           <input 
-            type="text" placeholder="Ej. Sergio@gmail.com" value={usuario} 
+            type="text" placeholder="Ej. Dbas" value={usuario} 
             onChange={(e) => setUsuario(e.target.value)} required 
             style={{ width: '100%', padding: '12px', marginTop: '5px', backgroundColor: '#2c2c2c', color: 'white', border: '1px solid #333', borderRadius: '6px', boxSizing: 'border-box' }}
           />
         </div>
 
         <div style={{ marginBottom: esRegistro ? '15px' : '25px' }}>
-          <label>Contraseña:</label>
+          <label style={{ color: '#ccc' }}>Contraseña:</label>
           <input 
             type="password" placeholder="********" value={password} 
             onChange={(e) => setPassword(e.target.value)} required 
@@ -84,7 +65,7 @@ function Login({ onLoginExitoso }) {
 
         {esRegistro && (
           <div style={{ marginBottom: '25px' }}>
-            <label>Selecciona tu calle:</label>
+            <label style={{ color: '#ccc' }}>Selecciona tu calle:</label>
             <select 
               value={calle} 
               onChange={(e) => setCalle(e.target.value)} 
@@ -92,7 +73,7 @@ function Login({ onLoginExitoso }) {
               style={{ width: '100%', padding: '12px', marginTop: '5px', backgroundColor: '#2c2c2c', color: 'white', border: '1px solid #333', borderRadius: '6px', boxSizing: 'border-box' }}
             >
               <option value="">¿En qué calle vives?</option>
-              {callesCulturas.map(c => <option key={c} value={c}>{c}</option>)}
+              {callesTecnologico.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
         )}
